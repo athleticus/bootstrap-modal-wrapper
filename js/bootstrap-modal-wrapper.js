@@ -138,7 +138,7 @@ BootstrapModal.prototype = {
     }
 };
 
-var BootstrapConfirm = function(options){
+var BootstrapConfirm = function(options, okayFunction, cancelFunction){
 
     var okayed = false;
     
@@ -152,10 +152,13 @@ var BootstrapConfirm = function(options){
         BootstrapModalButtons.close
     ];
     
+    //confirm dialog boxes are single use
+    options.removeAfterClose = true;
+    
     var confirm = new BootstrapModal(options);
     
     confirm.on('hidden', function(event){
-        console.log(okayed);
+        okayed ? okayFunction() : cancelFunction();
     });
     
     return confirm;
