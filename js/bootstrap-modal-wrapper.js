@@ -4,25 +4,29 @@ var BootstrapModal = function(options){
     return this.elem;
 };
 
-var BootstrapModalButtons = {
-    save: {
-        label: 'Save Changes',
-        beforeAction: function(){ return true; },
-        action: function(){ return true; },
-        primary: true
-    },
-    ok: {
-        label: 'Okay',
-        beforeAction: function(){ return true; },
-        action: function(){ return true; },
-        primary: true
-    },
-    close: {
-        label: 'Close',
-        beforeAction: function(){ return true; },
-        action: function(){ return true; }
-    }
-};
+var BootstrapModalButtons = (function(){
+    var buttons = {
+        save: {
+            label: 'Save Changes',
+            beforeAction: function(){ this.continue(); },
+            action: function(){ this.continue(); },
+            primary: true
+        },
+        ok: {
+            label: 'Okay',
+            beforeAction: function(){ this.continue(); },
+            action: function(){ this.continue(); },
+            primary: true
+        },
+        close: {
+            label: 'Close',
+            beforeAction: function(){ this.continue(); },
+            action: function(){ this.continue(); }
+        }
+    };
+    
+    return buttons;
+})();
 
 BootstrapModal.prototype = {
     defaultOpts: {
@@ -100,21 +104,35 @@ BootstrapModal.prototype = {
         modalFooter.on('click', 'button', function(event){
             var btn = $(this);
             var config = btn.data('config');
+            var fns = [];
+            var fni = 0;
+            var event;
             
-            //try the before action
             if(config.beforeAction){
-                if(!config.beforeAction()){
-                    return;
-                }
+                fns.push(config.beforeAction);
             }
-            //try the action
             if(config.action){
-                if(!config.action()){
-                    return;
-                }
+                fns.push(config.action);
             }
-            //close the modal
-            self.elem.modal('hide');
+            
+            fns.push(function(){
+                //close the modal
+                self.elem.modal('hide');
+            });
+            
+            //event obj
+            event = {
+                modalElem: self.elem,
+                continue: function(){
+                    fni++;
+                    fns[fni].call(event);
+                    if(fni === fns.length){
+                        event.continue = function(){};
+                    }
+                },
+                stop: function(){}
+            }
+            event.continue.call(event);
         });
         
         modal.on('hidden', function(event){
