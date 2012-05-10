@@ -10,4 +10,35 @@
 <script src="lib/bootstrap/js/bootstrap.js"></script>
 <script src="js/bootstrap-modal-wrapper.js"></script>
 
+<script>
+    $(function(){
+        var modals = {};
+        
+        modals.waitTest = function(){
+            var modal = new BootstrapModal({
+                text: 'Hello World!',
+                buttons: [
+                    $.extend(BootstrapModalButtons.ok, {
+                        beforeAction: function(){
+                            var that = this,
+                                time = 2;
+                            console.log('waiting ' + time + ' seconds before closing');
+                            that.showLoading();
+                            setTimeout(function(){
+                                that.closeLoading();
+                                that.continue();
+                            }, time * 1000);
+                        }
+                    })
+                ],
+                keyboard: false,
+                backdrop: 'static'
+            });
+            return modal;
+        };
+        
+        window.modals = modals;
+    });
+</script>
+
 </html>
