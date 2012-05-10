@@ -110,11 +110,14 @@ BootstrapModal.prototype = {
             var fni = 0;
             var event;
             
+            // ----
+            // LEGACY support
             if(config.beforeAction){
                 fns.push(config.beforeAction);
             }
+            // ----
             if(config.action){
-                fns.push(config.action);
+                $.merge(fns, $.isArray(config.action) ? config.action : [config.action]);
             }
             
             fns.push(function(){
@@ -123,17 +126,54 @@ BootstrapModal.prototype = {
             });
             
             //event obj
-            event = {
-                modalElem: self.elem,
-                continue: function(){
-                    fni++;
-                    fns[fni].call(event);
-                    if(fni === fns.length){
-                        event.continue = function(){};
+            event = (function(){
+                var loadingElem,
+                    isLoading = false,
+                    initLoading,
+                    event,
+                    fadeTime = 400;
+                initLoading = function(){ 
+                    loadingElem = $('<div class="loading"/>');
+                    loadingElem.css({
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        top: '0',
+                        left: '0',
+                        background: 'rgba(255, 127, 127, 0.7)',
+                        zIndex: '2100'
+                    }).fadeTo(0,0);
+                    self.elem.append(loadingElem);
+                
+                    //stop this function being called again                    
+                    initLoading = function(){};
+                };
+                event = {
+                    modalElem: self.elem,
+                    continue: function(){
+                        fni++;
+                        fns[fni-1].call(event);
+                        if(fni === fns.length){
+                            event.continue = function(){};
+                        }
+                    },
+                    stop: function(){},
+                    showLoading: function(){
+                        if(isLoading){
+                            return;
+                        }
+                        initLoading();
+                        isLoading = true;
+                        loadingElem.fadeTo(fadeTime, 1);
+                    },
+                    closeLoading: function(){
+                        isLoading = false;
+                        loadingElem.fadeTo(fadeTime, 0);
                     }
-                },
-                stop: function(){}
-            }
+                };
+                return event;
+            })();
+            
             event.continue.call(event);
         });
         
@@ -153,7 +193,7 @@ BootstrapModal.prototype = {
         });
     },
     setOpts: function(opts){
-        this.opts = $.extend(this.defaultOpts, opts);
+        this.opts = $.extend(true, this.defaultOpts, opts);
     },
     closeFunction: function(event){
         $(this).closest('.modal').modal('hide');
