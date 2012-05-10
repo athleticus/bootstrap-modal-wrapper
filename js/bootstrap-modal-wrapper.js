@@ -37,7 +37,9 @@ BootstrapModal.prototype = {
         removeAfterHide: false,
         buttons: [
             BootstrapModalButtons.close
-        ]
+        ],
+        keyboard: false,
+        backdrop: true
     },
     init: function(){
         var self = this;
@@ -143,10 +145,12 @@ BootstrapModal.prototype = {
         
         //append the modal to the body
         this.elem.appendTo('body');
-        
-        if(this.opts.autoShow){
-            this.elem.modal();
-        }
+
+        this.elem.modal({
+            keyboard: self.opts.keyboard,
+            backdrop: 'static',
+            show: this.opts.autoShow
+        });
     },
     setOpts: function(opts){
         this.opts = $.extend(this.defaultOpts, opts);
