@@ -104,11 +104,11 @@ BootstrapModal.prototype = {
         
         //listen for clicks
         modalFooter.on('click', 'button', function(event){
-            var btn = $(this);
-            var config = btn.data('config');
-            var fns = [];
-            var fni = 0;
-            var event;
+            var btn = $(this),
+                config = btn.data('config'),
+                fns = [],
+                fni = 0,
+                event;
             
             // ----
             // LEGACY support
