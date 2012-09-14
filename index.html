@@ -18,7 +18,7 @@
             var modal = new BootstrapModal({
                 text: 'Hello World!',
                 buttons: [
-                    $.extend(BootstrapModalButtons.ok, {
+                    $.extend(BootstrapModalButtons.getButton(ok), {
                         beforeAction: function(){
                             var that = this,
                                 time = 2;

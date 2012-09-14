@@ -24,8 +24,16 @@ var BootstrapModalButtons = (function(){
             action: function(){ this.continue(); }
         }
     };
-    
-    return buttons;
+    var getButton = function(name){
+        var btn = buttons[name];
+        if(!btn){
+            throw new Error('There is no button defined with the index of "' + name + '".');
+        }
+        return $.extend(true, {}, btn);
+    };
+    return {
+        getButton: getButton
+    };
 })();
 
 BootstrapModal.prototype = {
@@ -36,7 +44,7 @@ BootstrapModal.prototype = {
         autoShow: true,
         removeAfterHide: false,
         buttons: [
-            BootstrapModalButtons.close
+            BootstrapModalButtons.getButton('close')
         ],
         keyboard: false,
         backdrop: true
@@ -74,6 +82,9 @@ BootstrapModal.prototype = {
         var btnGroup = $();
         //iterate over the buttons and create them
         $.each(options.buttons, function(key, value){
+        
+            //copy the button
+            value = $.extend({}, value);
         
             //create the button
             var btn = $('<button class="btn" />');
@@ -205,13 +216,13 @@ var BootstrapConfirm = function(options, okayFunction, cancelFunction){
     var okayed = false;
     
     options.buttons = [
-        $.extend(BootstrapModalButtons.ok, {
-            action: function(event){
+        $.extend(BootstrapModalButtons.getButton('ok'), {
+            action: function(){
                 okayed = true;
-                return true;
+                this.continue();
             }
         }),
-        BootstrapModalButtons.close
+        BootstrapModalButtons.getButton('close')
     ];
     
     //confirm dialog boxes are single use
