@@ -6,37 +6,38 @@
         return this.elem;
     };
 
-    var BootstrapModalButtons = (function(){
-        var buttons = {
-            save: {
-                label: 'Save Changes',
-                beforeAction: function(){ this.continue(); },
-                action: function(){ this.continue(); },
-                primary: true
-            },
-            ok: {
-                label: 'Okay',
-                beforeAction: function(){ this.continue(); },
-                action: function(){ this.continue(); },
-                primary: true
-            },
-            close: {
-                label: 'Close',
-                beforeAction: function(){ this.continue(); },
-                action: function(){ this.continue(); }
-            }
-        };
-        var getButton = function(name){
-            var btn = buttons[name];
-            if(!btn){
-                throw new Error('There is no button defined with the index of "' + name + '".');
-            }
-            return $.extend(true, {}, btn);
-        };
-        return {
-            getButton: getButton
-        };
-    })();
+    var defaultAction = function(){
+        this.continue();
+    };
+
+    var buttons = {
+        save: {
+            label: 'Save Changes',
+            beforeAction: defaultAction,
+            action: defaultAction,
+            primary: true
+        },
+        ok: {
+            label: 'Okay',
+            beforeAction: defaultAction,
+            action: defaultAction,
+            primary: true
+        },
+        close: {
+            label: 'Close',
+            beforeAction: defaultAction,
+            action: defaultAction
+        }
+    };
+
+    var getButton = function(name){
+        var btn = buttons[name];
+        if(!btn){
+            throw new Error('There is no button defined with the index of "' + name + '".');
+        }
+        return $.extend(true, {}, btn);
+    };
+
 
     BootstrapModal.prototype = {
         defaultOpts: {
@@ -46,7 +47,7 @@
             autoShow: true,
             removeAfterHide: false,
             buttons: [
-                BootstrapModalButtons.getButton('close')
+                getButton('close')
             ],
             keyboard: false,
             backdrop: true
@@ -224,7 +225,7 @@
                     this.continue();
                 }
             }),
-            BootstrapModalButtons.getButton('close')
+            getButton('close')
         ];
         
         //confirm dialog boxes are single use
@@ -238,5 +239,23 @@
         
         return confirm;
     };
+
+    var createModal = function(){
+        var args = Array.prototype.slice.call(arguments);
+        return BootstrapModal.apply({}, args);
+    };
+
+    var createConfirm = function(){
+        var args = Array.prototype.slice.call(arguments);
+        return BootstrapConfirm.apply({}, args);
+    };
+
+    var returnObj = $.proxy(createModal, {});
+
+    returnObj.getButton = getButton;
+    returnObj.createModal = createModal;
+    returnObj.createConfirm = createConfirm;
+
+    window.BootstrapModal = returnObj;
 
 })(jQuery, window);
