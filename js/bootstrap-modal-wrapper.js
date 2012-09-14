@@ -38,6 +38,18 @@
         return $.extend(true, {}, btn);
     };
 
+    var extendButton = function(){
+        var args = Array.prototype.slice.call(arguments);
+        var name = args.shift();
+        var btn = buttons[name];
+        if(!btn){
+            throw new Error('There is no button defined with the index of "' + name + '".');
+        }
+        args.unshift(btn);
+        args.unshift(true);
+        return $.extend.apply($, args);
+    };
+
     var addButton = function(name, button){
         var btn = $.extend({}, button);
         
@@ -232,7 +244,7 @@
         var okayed = false;
         
         options.buttons = [
-            $.extend(BootstrapModalButtons.getButton('ok'), {
+            extendButton('ok', {
                 action: function(){
                     okayed = true;
                     this.continue();
@@ -267,6 +279,7 @@
 
     returnObj.getButton = getButton;
     returnObj.addButton = addButton;
+    returnObj.extendButton = extendButton;
     returnObj.createModal = createModal;
     returnObj.createConfirm = createConfirm;
 
