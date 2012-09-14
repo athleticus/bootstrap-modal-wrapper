@@ -86,7 +86,7 @@
             modalBody.append(options.body);
             
             //get a unique id
-            var id = 'modal-'+(new Date().getTime());
+            var id = options.id || 'modal-'+(new Date().getTime());
             
             //create an empty jquery object to hold the buttons
             var btnGroup = $();
