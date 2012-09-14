@@ -38,6 +38,19 @@
         return $.extend(true, {}, btn);
     };
 
+    var addButton = function(name, button){
+        var btn = $.extend({}, button);
+        
+        if(!btn.beforeAction){
+            btn.beforeAction = defaultAction;
+        }
+        
+        if(!btn.action){
+            btn.action = defaultAction;
+        }
+
+        buttons[name] = btn;
+    };
 
     BootstrapModal.prototype = {
         defaultOpts: {
@@ -253,6 +266,7 @@
     var returnObj = $.proxy(createModal, {});
 
     returnObj.getButton = getButton;
+    returnObj.addButton = addButton;
     returnObj.createModal = createModal;
     returnObj.createConfirm = createConfirm;
 
