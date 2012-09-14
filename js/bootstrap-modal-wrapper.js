@@ -10,25 +10,7 @@
         this.continue();
     };
 
-    var buttons = {
-        save: {
-            label: 'Save Changes',
-            beforeAction: defaultAction,
-            action: defaultAction,
-            primary: true
-        },
-        ok: {
-            label: 'Okay',
-            beforeAction: defaultAction,
-            action: defaultAction,
-            primary: true
-        },
-        close: {
-            label: 'Close',
-            beforeAction: defaultAction,
-            action: defaultAction
-        }
-    };
+    var buttons = {};
 
     var getButton = function(name){
         var btn = buttons[name];
@@ -72,7 +54,7 @@
             autoShow: true,
             removeAfterHide: false,
             buttons: [
-                getButton('close')
+                'close'
             ],
             keyboard: false,
             backdrop: true
@@ -110,6 +92,11 @@
             var btnGroup = $();
             //iterate over the buttons and create them
             $.each(options.buttons, function(key, value){
+
+                //if button (value) is a string, get the button object
+                if(typeof value === 'string'){
+                    value = getButton(value);
+                }
             
                 //copy the button
                 value = $.extend({}, value);
@@ -250,7 +237,7 @@
                     this.continue();
                 }
             }),
-            getButton('close')
+            'close'
         ];
         
         //confirm dialog boxes are single use
@@ -284,5 +271,24 @@
     returnObj.createConfirm = createConfirm;
 
     window.BootstrapModal = returnObj;
+
+    //add default buttons
+    addButton('save', {
+        label: 'Save Changes',
+        beforeAction: defaultAction,
+        action: defaultAction,
+        primary: true
+    });
+    addButton('ok', {
+        label: 'Okay',
+        beforeAction: defaultAction,
+        action: defaultAction,
+        primary: true
+    });
+    addButton('close', {
+        label: 'Close',
+        beforeAction: defaultAction,
+        action: defaultAction
+    });
 
 })(jQuery, window);
