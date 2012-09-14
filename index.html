@@ -37,6 +37,19 @@
             return modal;
         };
         
+        modals.confirmTest = function(){
+            var confirm = new BootstrapConfirm({
+                text: 'Do you want to confirm?'
+            },
+            function(){
+                console.log('pass');
+            },
+            function(){
+                console.log('fail');
+            });
+            return confirm;
+        };
+        
         window.modals = modals;
     });
 </script>
