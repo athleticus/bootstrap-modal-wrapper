@@ -232,7 +232,7 @@
             });
         },
         setOpts: function(opts){
-            this.opts = $.extend(true, this.defaultOpts, opts);
+            this.opts = $.extend(true, {}, this.defaultOpts, opts);
         },
         closeFunction: function(event){
             $(this).closest('.modal').modal('hide');
