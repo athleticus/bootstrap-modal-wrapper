@@ -27,8 +27,7 @@
         if(!btn){
             throw new Error('There is no button defined with the index of "' + name + '".');
         }
-        args.unshift(btn);
-        args.unshift(true);
+        args = [true, {}, btn].concat(args);
         return $.extend.apply($, args);
     };
 
