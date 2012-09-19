@@ -1,9 +1,16 @@
 (function($, window){
 
+    function object(o){
+        function F(){}
+        F.prototype = o;
+        return new F();
+    }
+
     var BootstrapModal = function(options){
-        this.setOpts(options);
-        this.init();
-        return this.elem;
+        var self = object(BoostrapModalFns);
+        self.setOpts(options);
+        self.init();
+        return self.elem;
     };
 
     var defaultAction = function(){
@@ -45,7 +52,7 @@
         buttons[name] = btn;
     };
 
-    BootstrapModal.prototype = {
+    var BoostrapModalFns = {
         defaultOpts: {
             html: '<div class="modal fade hide"><div class="modal-header"><a class="close" data-dismiss="modal">&times;</a><h3>Title</h3></div><div class="modal-body"></div><div class="modal-footer"></div></div>',
             text: '',
@@ -253,12 +260,12 @@
 
     var createModal = function(){
         var args = Array.prototype.slice.call(arguments);
-        return BootstrapModal.apply({}, args);
+        return BootstrapModal.apply(BootstrapModal, args);
     };
 
     var createConfirm = function(){
         var args = Array.prototype.slice.call(arguments);
-        return BootstrapConfirm.apply({}, args);
+        return BootstrapConfirm.apply(BootstrapConfirm, args);
     };
 
     var returnObj = $.proxy(createModal, {});
