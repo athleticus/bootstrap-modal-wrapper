@@ -76,7 +76,7 @@
             var modalBody = modal.find('.modal-body');
             var modalFooter = modal.find('.modal-footer');
             
-            if(typeof options.title === 'string'){
+            if(options.title){
                 //append the title
                 modalTitle.text(options.title);
             } else {
@@ -84,7 +84,7 @@
             }
             
             //test if simple text has been set
-            if(typeof options.text === 'string'){
+            if(options.text){
                 options.body = '<p>'+options.text+'</p>'
             }
             
