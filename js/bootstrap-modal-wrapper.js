@@ -275,6 +275,14 @@
     returnObj.extendButton = extendButton;
     returnObj.createModal = createModal;
     returnObj.createConfirm = createConfirm;
+    returnObj.updateDefaultOptions = function(){
+        var args = Array.prototype.slice.call(arguments);
+        if(typeof args[0] === 'string'){
+            BootstrapModalFns.defaultOpts[args[0]] = args[1];
+        } else {
+            $.extend(BootstrapModalFns.defaultOpts, args[0]);
+        }
+    };
 
     window.BootstrapModal = returnObj;
 
