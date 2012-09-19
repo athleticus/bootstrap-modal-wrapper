@@ -15,10 +15,10 @@
         var modals = {};
         
         modals.waitTest = function(){
-            var modal = new BootstrapModal({
+            var modal = BootstrapModal({
                 text: 'Hello World!',
                 buttons: [
-                    $.extend(BootstrapModalButtons.getButton(ok), {
+                    BootstrapModal.extendButton('ok', {
                         beforeAction: function(){
                             var that = this,
                                 time = 2;
@@ -38,7 +38,7 @@
         };
         
         modals.confirmTest = function(){
-            var confirm = new BootstrapConfirm({
+            var confirm = BootstrapModal.createConfirm({
                 text: 'Do you want to confirm?'
             },
             function(){
