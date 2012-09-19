@@ -7,7 +7,7 @@
     }
 
     var BootstrapModal = function(options){
-        var self = object(BoostrapModalFns);
+        var self = object(BootstrapModalFns);
         self.setOpts(options);
         self.init();
         return self.elem;
@@ -52,7 +52,7 @@
         buttons[name] = btn;
     };
 
-    var BoostrapModalFns = {
+    var BootstrapModalFns = {
         defaultOpts: {
             html: '<div class="modal fade hide"><div class="modal-header"><a class="close" data-dismiss="modal">&times;</a><h3>Title</h3></div><div class="modal-body"></div><div class="modal-footer"></div></div>',
             text: '',
